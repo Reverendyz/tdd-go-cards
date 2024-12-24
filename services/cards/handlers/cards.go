@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/reverendyz/tdd-go-cards/pkg/db"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Card struct {
@@ -15,21 +16,28 @@ type Card struct {
 	Description string `json:"description" binding:"required"`
 }
 
-func AddCard(c *gin.Context) {
+func AddCard(c *gin.Context, client *mongo.Client) {
 	var card Card
 	if err := c.ShouldBindJSON(&card); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	client := db.GetClient()
+	collection := client.Database("cards").Collection("cards")
+	if _, err := collection.InsertOne(ctx, card); err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to insert card",
+		})
+		return
+	}
 
-	client.Database("cards").Collection("cards").InsertOne(ctx, card)
-
-	client.Disconnect(ctx)
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"message": "Card created successfully",
+	})
 }
 
 func GetCards(c *gin.Context) {
@@ -44,7 +52,7 @@ func GetCards(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
-		log.Default().Fatalf("error: ", err.Error())
+		log.Default().Fatalf("error: %v", err.Error())
 	}
 	cursor.All(ctx, cards)
 
