@@ -7,14 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"reverendyz/tdd-go-cards/handlers"
-
-	"reverendyz/tdd-go-cards/db"
-
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/v2/mongo/integration/mtest"
+	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
 )
 
 func TestAddCard(t *testing.T) {
