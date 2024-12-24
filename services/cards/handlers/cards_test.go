@@ -5,8 +5,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"reverendyz/tdd-go-cards/pkg/db"
 	"testing"
+
+	"github.com/reverendyz/tdd-go-cards/pkg/db"
 
 	"github.com/gin-gonic/gin"
 	"github.com/reverendyz/tdd-go-cards/services/cards/handlers"
@@ -18,7 +19,6 @@ import (
 func TestAddCard(t *testing.T) {
 
 	mt := mtest.New(t, mtest.NewOptions().ClientType(mtest.Mock))
-	defer mt.Close()
 
 	mt.Run("add valid card", func(mt *mtest.T) {
 

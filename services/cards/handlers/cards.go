@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"reverendyz/tdd-go-cards/pkg/db"
 	"time"
 
 	"github.com/gin-gonic/gin"
