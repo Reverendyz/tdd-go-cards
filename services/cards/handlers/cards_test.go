@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reverendyz/tdd-go-cards/pkg/db"
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/reverendyz/tdd-go-cards/services/cards/handlers"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/integration/mtest"
@@ -22,7 +24,7 @@ func TestAddCard(t *testing.T) {
 
 		gin.SetMode(gin.TestMode)
 		r := gin.Default()
-		r.POST("/cards", handlers.AddCard)
+		r.POST("/cards", handlers)
 
 		card := handlers.Card{
 			Title:       "Test Card",
