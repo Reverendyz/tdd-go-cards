@@ -1,4 +1,4 @@
-module reverendyz/tdd-go-cards
+module github.com/reverendyz/tdd-go-cards
 
 go 1.23.4
 
